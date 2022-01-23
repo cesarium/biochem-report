@@ -1,0 +1,2 @@
+trajin MD2.mdcrd
+rms first mass out ptraj-rmsd.out :1-198 time 0.1
