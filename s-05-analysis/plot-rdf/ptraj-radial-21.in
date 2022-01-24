@@ -1,0 +1,3 @@
+trajin MD2.mdcrd
+radial MD-RDF-Res21A 0.1 10 :WAT@O :21@OE*
+radial MD-RDF-Res21B 0.1 10 :WAT@O :120@OE*

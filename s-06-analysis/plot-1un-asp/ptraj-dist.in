@@ -1,5 +1,0 @@
-trajin MD2.mdcrd
-distance distA :25@OD1 :1UN@O21 out prot-nelf-MD2-distA.list time 0.1
-distance distB :25@OD2 :1UN@O21 out prot-nelf-MD2-distB.list time 0.1
-distance distC :124@OD1 :1UN@O21 out prot-nelf-MD2-distC.list time 0.1
-distance distD :124@OD2 :1UN@O21 out prot-nelf-MD2-distD.list time 0.1

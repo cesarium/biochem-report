@@ -27,18 +27,22 @@
 \usepackage[nameinlink,capitalize]{cleveref}
 \usepackage[bottom]{footmisc}
 
-\title{\textbf{HIV-1 Protease}}
+\title{\textbf{Estudo Computacional do Nelfinavir\\incorporado na HIV-1 Protease}}
 \author{\textbf{António Cesário}\\\\%
 	Faculdade de Ciências da Universidade do Porto\\%
 	Mestrado em Física Experimental\\%
 	Bioquímica Computacional%\\%
 	}
-\date{\today}
+\date{23 de janeiro de 2022}
 
 \begin{document}
 	\maketitle
 	\begin{abstract}
-		\lipsum[1]
+		Neste trabalho foram exploradas os primeiros passos com rumo à simulação de sistemas biológicos, tendo sido abordada teoria, trabalho computacional e vários métodos de análise da dados.
+	
+		A incorporação do Nelfinavir na HIV-1 protease foi o nosso objeto de estudo e foi realizada uma pequena simulação de 120 ps de Dinâmica Molecular, que se mostrou termodinamicamente estável, embora não se tenha conseguido chegar a uma estrutura convergida.
+		
+		A análise de dados foi bastante diversificada, permitindo-me aprender maneiras diferentes de extrair vários tipos de informação das estruturas obtidas, desde comprimentos e ângulos de ligação das pontes de hidrogénio do sistema às funções de distribuição radial de moléculas de água de certos átomos em resíduos de referência.
 	\end{abstract}
 	\newpage
 	
@@ -47,19 +51,19 @@
 \subsection{Inibidores da HIV-1 protease}
 	%Alguns destes pontos são para ser discutidos no abstract.
 	%Falar da proteína em si e quais as suas funções, pq é que danificá-la para a propagação/infeção da sida, o que é um inibidor, extra: como é que foi implementado experimentalmente este inibidor no artigo usado extra: origem da ideia de usar este inibidor
-	A Protease do HIV-1 é uma enzima responsável por um passo essencial no ciclo de vida do vírus HIV. Para que as proteínas do HIV-1 desempenharem as suas funções, é necessário que elas sejam clivadas em pontos específicos. Dada a especificidade deste processo, foram procuradas formas de interferir com ele, afim de interromper o ciclo de vida do HIV.
+	A Protease do HIV-1 é uma enzima responsável por um passo essencial no ciclo de vida do vírus HIV. Para que as proteínas do HIV-1 desempenharem as suas funções, é necessário que elas sejam clivadas em pontos específicos. Dada a especificidade deste processo, foram procuradas formas de interferir com ele, afim de interromper o ciclo de vida do vírus.
 	
 	Neste relatório foi abordado um dos métodos desenvolvidos para concretizar esta ideia, incorporando o inibidor \textit{Nelfinavir} na estrutura da protease.
 	
-	Em primeiro irei apresentar algum fundamento teórico para explicar a física subjacente aos cálculos computacionais. Depois mostro como representar a estrutura estudada e explico como foram executadas as simulações computacionais. Por último irei apresentar os resultados referentes às simulações e procurar concluir informação relevante ao caso em estudo.
+	Em primeiro irei apresentar algum fundamento teórico para explicar a física subjacente aos cálculos computacionais. Depois mostro como representar a estrutura estudada e explico como foram executadas as simulações computacionais. Por último irei apresentar os resultados das simulações e explorar vários métodos de análise dos dados obtidos.
 	
 \section{Fundamento Teórico}
 	A base para a entendermos como se comportam estes sistemas biológicos está em estabelecer modelos computacionais que nos permitam simular propriedades de interesse. Nesta secção apresento alguns destes métodos e refiro ideias que encontrei durante a minha pesquisa e tenha achado interessantes.
 	
-	Os princípios físicos utilizados dependem de modelo para modelo, sendo os mais importantes derivados de Mecânica Molecular, Dinâmica Molecular e Mecânica Quântica Molecular. Como o sistema estudado possui centenas de átomos, as simulações baseadas em Mecânica Quântica não são passíveis de se concluírem em tempo útil, pelo que neste trabalho apenas foram usados os primeiros dois métodos computacionais.
+	Os princípios físicos utilizados dependem de modelo para modelo, sendo os mais importantes derivados de Mecânica Molecular, Dinâmica Molecular e Mecânica Quântica Molecular. Como o sistema estudado possui centenas de átomos, as simulações baseadas em Mecânica Quântica não são passíveis de se concluírem em tempo útil, pelo que neste trabalho apenas foram estudados apenas os primeiros dois métodos computacionais.
 	
 \subsection{Mecânica Molecular}\label{sec:MM}
-	O método mais comum para descrever a energia de um sistema biológico serve-se de potenciais empíricos derivados da Mecânica Molecular.	Se considerarmos um sistema biológico de $N$ átomos, a sua energia potencial, $U\left(r_{1}, r_{2}, \ldots, r_{N}\right)$, pode ser descomposta como a soma de de interações a uma partícula, duas partículas, e assim sucessivamente:
+	O método mais comum para descrever a energia de um sistema biológico serve-se de potenciais empíricos derivados da Mecânica Molecular.	Se considerarmos um sistema de $N$ átomos, a sua energia potencial, $U\left(r_{1}, r_{2}, \ldots, r_{N}\right)$, pode ser descomposta como a soma de de interações a uma partícula, duas partículas, e assim sucessivamente:
 	\begin{equation}
 		U\left(r_{1}, r_{2}, \ldots, r_{N}\right) = \sum_{i=1}^{N} U\left(r_{i}\right)+\sum_{i=1}^{N} \sum_{j>i}^{N} U\left(r_{i}, r_{j}\right)+\sum_{i=1}^{N} \sum_{j>i}^{N} \sum_{k>j>i}^{N} U\left(r_{i}, r_{j}, r_{k}\right)+\ldots
 		\label{eq:intro:Udecomp}
@@ -78,7 +82,7 @@
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.5\textwidth]{images/interactions.jpeg}
-		\caption{Image from \cite{cheathamMolecularModelingNucleic2001}.}
+		\caption{Resumo da origem das interações mais importantes para o termo potencial da \cref{eq:intro:Usecond-order}. À direita encontram-se as formas genéricas dos respetivos potenciais. Imagem de \cite{cheathamMolecularModelingNucleic2001}.}
 		\label{fig:intro:inters}
 	\end{figure}
 
@@ -92,7 +96,7 @@
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.5\textwidth]{images/harmonic-deviation.png}
-		\caption{Image from \cite{2021Harmonic}.}
+		\caption{Validade das aproximações de primeira e segunda ordem em $r$ e em $\theta$ na determinação da energia de ligação entre duas partículas. Imagem de \cite{2021Harmonic}.}
 		\label{fig:intro:harmonic-deviation}
 	\end{figure}
 	 
@@ -102,9 +106,9 @@
 	\end{equation}
 	onde $r_{eq}$, $\theta_{eq}$, e $\gamma$ são parâmetros de equilíbrio da geometria, e os parâmetros $K_\textrm{lig}$, $K_\theta$ e $V_n$ são constantes de força, que caracterizam a dependência da energia face os desvios à geometria de equilíbrio. 
 	
-	O somatório em $n$ no termo de torção diz-nos que podemos ter vários ângulos de rotação estáveis, onde o $n$ está associado à periodicidade/simetria do sistema, que determina a o de mínimos de energia contidos entre $0$ e $2\pi$.
+	O somatório em $n$ no termo de torção diz-nos que podemos ter vários ângulos de rotação estáveis, onde o $n$ está associado à periodicidade/simetria do sistema, que determina o de mínimos de energia contidos entre $0$ e $2\pi$.
 	
-	As interações intramoleculares entre duas partículas do sistema são, portanto, caracterizadas pelo conjunto de parâmetros referidos, tipicamente sob a assunção de que o campo de forças é transferível de vizinhança para vizinhança, ou seja: uma ligação C-C num propano deve de ser semelhante a C-C em butano. Porém, esta transferibilidade nem sempre é possível, pelo que existem campos de forças que só podem ser aplicados num conjunto restrito de sistemas.
+	As interações intramoleculares entre duas partículas do sistema são, portanto, caracterizadas pelo conjunto de parâmetros referidos, tipicamente sob a assunção de que o campo de forças é transferível de vizinhança para vizinhança, ou seja: uma ligação C-C num propano deve de ser semelhante a C-C em butano. Porém, esta transferibilidade nem sempre é possível, pelo que existem campos de forças que só podem ser aplicados num conjunto restrito de sistemas. Também existem casos em que as ligações são especificadas tendo em conta um terceiro átomo, por exemplo: um conjunto de parâmetros se em C-C um dos C's estiver ligado a um H e outro conjunto se esse C estiver ligado a um S.
 	
 	Os comprimentos e ângulos de ligação são determinados experimentalmente por cristalografia (como difração de neutrões, ou outras técnicas de espectroscopia), com constantes de força inferidas a partir de outras experiências de micro-ondas ou infravermelhos, por exemplo. Os termos de torção, por outro lado, são muito mais difíceis de determinar experimentalmente, por envolverem a interação de quatro partículas, embora a ligação que estejamos a analisar seja só entre duas. Estes parâmetros costumam ser os últimos a ser determinados, obtidos pela conjugação de dados experimentais, por exemplo através de Ressonância Magnética Nuclear, e cálculos de Mecânica Quântica \cite{weinerNewForceField1984,cheathamMolecularModelingNucleic2001,cornellSecondGenerationForce1995}.
 
@@ -127,9 +131,10 @@
 			\sum_{\text {dihedrals}} \sum_{n} \frac{V_{n}^{ij}}{2}[1+\cos (n \phi_{ij}-\gamma^{ij})]+\sum_{\text {non-bond }}\left[\frac{A_{i j}}{R_{i j}^{12}}-\frac{B_{i j}}{R_{i j}^{6}}+\frac{q_{i} q_{j}}{\varepsilon R_{i j}}\right]
 		\end{gathered}
 	\end{equation}
-	que corresponde à forma como estão parametrizados os campos de força AMBER, que possuem informação sobre milhares de combinações possíveis de parâmetros, que são introduzidos nesta equação para determinar, por exemplo, a configuração de distâncias, ângulos e torções intramoleculares que minimizam a energia de uma molécula. Mais informações sobre os campos de força AMBER podem ser encontrados na \href{https://ambermd.org/AmberModels.php}{página web} e no seu \href{https://ambermd.org/doc12/Amber21.pdf#page=264}{manual de 2021}.
+	que corresponde à forma como estão parametrizados os campos de força AMBER, que possuem informação sobre milhares de combinações possíveis de parâmetros, que são introduzidos nesta equação para determinar, por exemplo, a configuração de distâncias, ângulos e torções intramoleculares que minimizam a energia de uma molécula. Mais informações sobre estes campos de força podem ser encontradas na \href{https://ambermd.org/AmberModels.php}{página web} e no seu \href{https://ambermd.org/doc12/Amber21.pdf#page=264}{manual de 2021}.
 	
-	Existem, no entanto, várias desvantagens nestes métodos. Para além de termos que determinar empiricamente uma grande parte dos campos de forças, a Mecânica Molecular não nos permite obter com confiança a conformação de menor energia de um sistema. Isto acontece devido à elevada complexidade da superfície de potencial e o grande número de graus de liberdade. Assim, não é possível determinar o mínimo global do potencial sem uma amostragem exaustiva do imenso espaço das configurações possíveis.% - ver \cref{fig:intro:miniprob}.
+	Existem, no entanto, várias desvantagens nestes métodos. Para além de termos que determinar e
+	ricamente uma grande parte dos campos de forças, a Mecânica Molecular não nos permite obter com confiança a conformação de menor energia de um sistema. Isto acontece devido à elevada complexidade da superfície de potencial e o grande número de graus de liberdade. Assim, não é possível determinar o mínimo global do potencial sem uma amostragem exaustiva do imenso espaço das configurações possíveis. % - ver \cref{fig:intro:miniprob}.
 	É neste contexto que surgem outros métodos de simulação alternativos/complementares como a Dinâmica Molecular \cite{cheathamMolecularModelingNucleic2001,galindo-murilloMolecularModelingNucleic2014} ou até mesmo simulações de Monte-Carlo \cite{tenekedjievApplicationsMonteCarlo2011}.
 %	\begin{figure}[h]
 %		\centering
@@ -148,12 +153,13 @@
 	\begin{equation}
 		F_i=-\nabla_{i} \sum_{j}^{N} U_{i j}
 	\end{equation}
-	logo, pela segunda lei de Newton temos:
+	logo, pela segunda lei de Newton:
 	\begin{equation}
 		m_{i} \frac{d^{2} r_{i}}{d t^{2}}=-\nabla_{i} \sum_{j}^{N} U_{i j}
 		\label{eq:DM:segundaNewton}
 	\end{equation}
-	A dinâmica é então propagada pela integração numérica da \cref{eq:DM:segundaNewton}, de onde se extrairá a velocidade (integrar 1x) e a posição (integrar 2x) de cada uma das partículas do sistema. Os métodos numéricos tipicamente implementados são o de Verlet e o \textit{leapfrog} \cite{newman2013computational}. Este último algoritmo foi o utilizado nas nossas simulações, onde a cada iteração são calculadas as forças, posições e velocidades para cada átomo, pelo que é necessário escolher um bom compromisso entre tempo de computação e precisão, atendendo sempre ao facto de que a escala temporal do nosso passo de integração tem que ser menor que o fenómeno mais rápido que queremos estudar.
+
+	A dinâmica é então propagada pela integração numérica da \cref{eq:DM:segundaNewton}, de onde se extrairá a velocidade (integrar 1x) e a posição (integrar 2x) de cada uma das partículas do sistema. Os métodos numéricos tipicamente implementados são o das velocidades de Verlet e o \textit{leapfrog} \cite{newman2013computational}. Este último algoritmo foi o utilizado nas nossas simulações, onde a cada iteração são calculadas as forças, posições e velocidades de cada átomo, pelo que é necessário escolher um bom compromisso entre tempo de computação e precisão, atendendo sempre ao facto de que a escala temporal do nosso passo de integração tem que ser menor que o fenómeno mais rápido que queremos estudar.
 	Os cálculos das forças podem ser muito exigentes, pelo que certos algoritmos podem optar por simplificar $U_{ij}$ relativamente à Mecânica Molecular. Também é conveniente distinguir que os campos de força mencionados anteriormente na Sec. (\ref{sec:MM}) estão otimizados para a estrutura e não para dinâmica.
 	
 	A estabilidade das simulações está intimamente ligada ao passo de integração, que por sua vez está associado à frequência esperada da dinâmica. As ligações que envolvem hidrogénio são muito rápidas, sugerindo-nos passos de integração extremamente pequenos, $<$ 1 fs, para ter uma boa amostragem da dinâmica. Felizmente, o algoritmo SHAKE \cite{ryckaertNumericalIntegrationCartesian1977} permite-nos restringir graus de liberdade dessas ligações tal que seja possível utilizar tempos de integração maiores.
@@ -167,11 +173,11 @@
 	\end{equation}
 	onde $v_i$ e $w_i$ são as posições do átomo $i$ nos \textit{snapshots} $v$ e $w$, respetivamente.
 	
-	\paragraph{}Estando estabelecido o fundamento teórico necessário para compreender as bases por detrás dos cálculos computacionais, estamos agora em condições de explorar o trabalho computacional e de simulação.
+	\paragraph{}Estando estabelecidos os princípios teóricos necessários para compreender as bases por detrás dos cálculos computacionais, estamos agora em condições de explorar o trabalho computacional e de simulação.
 \section{Preparar e Visualizar a Estrutura}
 	A estrutura inicial foi obtida no website de RCSB Protein Data Bank, onde se encontra identificada pelo nome \textit{1ohr}, que pode visitar diretamente através \href{https://www.rcsb.org/structure/1OHR}{deste link}.
 	
-	O primeiro passo foi procurar desvendar a informação contida em \verb|1ohr.pdb|. Ao abrir o ficheiro com um editor de texto, podemos encontrar a informação do sistema em estudo estruturada como na \cref{fig:vis:pdb-print}, onde está expressa a informação relativa a cada átomo que constitui o sistema. Identificamos pelo menos duas cadeias, A e B, divididas no ficheiro pela linha inciada por \verb|TER|. Conseguimos também observar a composição e distribuição dos elementos do resíduo PRO da cadeia B, identificado como o seu primeiro resíduo. Com base nestas coordenadas e associações a resíduos, cadeias, entre outros, será possível estabelecer representações gráficas do sistema com o auxílio do \textit{free software} VMD (Visual Molecular Dynamics) \cite{HUMP96}.
+	O primeiro passo foi procurar desvendar a informação contida em \verb|1ohr.pdb|. Ao abrir o ficheiro com um editor de texto, podemos encontrar a descrição do sistema em estudo estruturada como na \cref{fig:vis:pdb-print}, onde está expressa a informação relativa a cada átomo que constitui o sistema. Identificamos pelo menos duas cadeias, A e B, divididas no ficheiro pela linha inciada por \verb|TER|. Conseguimos também observar a composição e distribuição dos elementos do resíduo PRO da cadeia B, identificado como o seu primeiro resíduo. Com base nestas coordenadas e associações a resíduos, cadeias, entre outros, será possível estabelecer representações gráficas do sistema com o auxílio do \textit{free software} VMD (Visual Molecular Dynamics) \cite{HUMP96}.
 	
 	\begin{figure}[h]
 		\centering
@@ -194,19 +200,19 @@
 	Embora tenhamos uma representação do sistema que queremos estudar, esta serve apenas como uma aproximação incical à sua estrutura. Isto deve-se ao facto destes dados terem sido obtidos experimentalmente, possivelmente em condições diferentes daquelas em que estamos interessados. É muito importante levar isto em conta porque podemos querer simular meios e/ou condições de pressão-temperatura específicos, alterando comprimentos ou ângulos de ligação e, possivelmente, quantidades termodinâmicas em que estamos interessados.
 	
 \subsubsection{Remover Hidrogénios}
-	Como a estrutura da \cref{fig:vis:original-pdb} foi obtida por cristalografia de raios-x, uma técnica que tem origem no \textit{scattering} de raios-x na nuvem eletrónica. Como o hidrogénio possui apenas um eletrão de valência, é provável que as posições detetadas para estes átomos sejam pouco precisas ou que até não tenham sido detetados todos os hidrogénios da estrutura \cite{woinskaHydrogenAtomsCan2016}. O próximo passo foi, portanto, remover todas as linhas em \verb|1ohr.pdb| onde se encontram átomos de H, resultando no ficheiro \verb|1ohr-no-H.pdb|. Estes átomos serão posteriormente adicionados pelo AMBER.
+	Como a estrutura da \cref{fig:vis:original-pdb} foi obtida por cristalografia de raios-x, uma técnica que tem origem no \textit{scattering} de raios-x na nuvem eletrónica, e o hidrogénio possui apenas um eletrão de valência, é provável que as posições detetadas para estes átomos sejam pouco precisas ou que até não tenham sido detetados todos os hidrogénios da estrutura \cite{woinskaHydrogenAtomsCan2016}. O próximo passo foi, portanto, remover todas as linhas em \verb|1ohr.pdb| onde se encontram átomos de H, resultando no ficheiro \verb|1ohr-no-H.pdb|. Estes átomos serão posteriormente adicionados pelo AMBER.
 
 \subsubsection{Identificar Interações no Inibidor}\label{sec:vis:inibidor}
 	Para lidar com elementos estruturais diferentes, distinguir por exemplo uma prolina (PRO) de uma glutamina (GLN), o AMBER recorre a bibliotecas que possuem modelos destas estruturas básicas. No entanto, o inibidor Nelfinavir, que designaremos por 1UN, não está presente nestas bibliotecas, pelo que teremos que o adicionar ao AMBER antes de prosseguir com as simulações. A criação dos \textit{scripts} adequados é um processo complexo, pelo que os professores simplesmente nos forneceram os ficheiros necessários já preparados: \verb|1UN.mod| e \verb|1UN.prepc|.
 	
 \subsubsection{ASP25 Protonado}
-	Como é referido em \cite{UnravelingHIVProtease,soaresDatasetShowingImpact2016,perezSubstrateRecognitionHIV12010}, o sistema constituído pela protease e o inibidor só é estável se um dos dois ácidos aspárticos (ASP25) for protonado. Para o AMBER interpretar um deles como tal, alterou-se \verb|ASP| (desprotonado) para \verb|ASH| (protonado) na cadeia A.
+	Como é referido em \cite{soaresDatasetShowingImpact2016,perezSubstrateRecognitionHIV12010}, o sistema constituído pela protease e o inibidor só é estável se um dos dois ácidos aspárticos (ASP25) for protonado. Para o AMBER interpretar um deles como tal, alterou-se \verb|ASP| (desprotonado) para \verb|ASH| (protonado) na cadeia A.
 	
-	\begin{equation}
-		\mathrm{pH} - \mathrm{pKa} = \log\dfrac{\left[A\right]}
-		{\left[AH^+\right]}
-	\end{equation}
-	logo, se pKa $>$ pH, teremos $\left[AH^+\right] > \left[A\right]$, pelo que o ácido estará protonado. 
+%	\begin{equation}
+%		\mathrm{pH} - \mathrm{pKa} = \log\dfrac{\left[A\right]}
+%		{\left[AH^+\right]}
+%	\end{equation}
+%	logo, se pKa $>$ pH, teremos $\left[AH^+\right] > \left[A\right]$, pelo que o ácido estará protonado. 
 	
 	
 	%\# Explicar o porquê de ter que protonar o ASP. Não esotu a conseguir entender qual deles protonar porque não entendo qual é a diferença de o fazer 
@@ -216,7 +222,7 @@
 \section{Simulações Computacionais}
 	%Adicionar o inibidor à biblioteca local de compostos do amber, talvez mostrar onde é guardada essa biblioteca, adicionar as águas (solvatação), neutralizar as cargas, falar daquela trip do pH e pKa nas caudas, minimização de energia para convergir as posições dos hidrogénios e não sei mais quê, dinâmica molecular para subir a temperatura e depois para relaxar o volume
 	
-	%A concretização destas simulações passa pela elaboração de \textit{scripts} escritos especificamente para as várias funções de AMBER utilizadas. Para facilitar a partilha do código utilizado e o apresentar de uma maneira conveniente, disponibilizei todo o trabalho computacional num \href{https://github.com/cesarium/comp-biochem}{repositório de GitHub}, permitindo também a reprodução dos resultados obtidos. Em caso de dúvidas por favor consulte o \verb|README.md| aí presente.
+	A concretização destas simulações passa pela elaboração de \textit{scripts} escritos especificamente para as várias funções de AMBER utilizadas. Para facilitar a partilha do código utilizado e o apresentar de uma maneira conveniente, disponibilizei todo o trabalho computacional num \href{https://github.com/cesarium/biochem-report}{repositório de GitHub}, permitindo também a reprodução dos resultados obtidos.
 	
 	%Irei começar por resumir esta parte computacional indicando todos os passos que seguimos. Depois disso irei explicar como cada um deles foi realizado.\textbf{\#basear-me no soares 2016}	
 	Antes de submeter o sistema às simulações de dinâmica, ainda é necessário neutralizá-lo, adicionar um solvente, e proceder à minimização da sua energia por mecânica molecular. Estes cálculos foram realizados através dos pacotes \verb|xleap| e \verb|sander| do AMBER-12, cujo manual pode ser encontrado \href{https://ambermd.org/doc12/Amber12.pdf}{neste link}. Foram usados os campos de forças AMBER FF03 \cite{duanPointchargeForceField2003,zhangWellbalancedForceField2019}, para simular certos parâmetros dos resíduos, e o \href{https://ambermd.org/antechamber/gaff.html}{GAFF } (\textit{General Amber Force Field}), que nos permite estudar um grande número de moléculas orgânicas compostas por C, N, O, H, S, P, F, Cl, Br e I. Os ficheiros referidos na Sec.(\ref{sec:vis:inibidor}) também tiveram que ser dados como \textit{input}.
@@ -226,9 +232,7 @@
 \subsection{Adição de um Solvente}
 	O sistema atual encontra-se em vácuo, pelo que precisamos de simular uma situação mais próxima daquelas em que a molécula se encontra na realidade, adicionando, por exemplo, uma vizinhança constituída por água.
 	
-	Antes de adicionar a água é necessário neutralizar o sistema. Com o \verb|xleap| adicionaram-se iões de Cl$^-$ e/ou Na$^+$, conforme determinado pelo programa, e logo depois, introduziu-se no sistema uma caixa de águas (explícitas) com dimensões tais que as distâncias do exterior da proteína às paredes da caixa sejam no mínimo 12\AA. O valor usado para as dimensões da caixa encontra-se tipicamente entre $8-12$\AA, quando condições fronteira periódicas são aplicadas aos cálculos \cite{galindo-murilloMolecularModelingNucleic2014}, que serão incluídas a seguir na mecânica e dinâmica molecular. O valor escolhido é um \textit{trade-off} entre precisão e custo computacional, que aumentam com as dimensões da caixa.
-	
-	Deste processo resultam os ficheiros seguintes: \verb|prot-nelf.pdb|, \verb|prot-nelf.prmtop|, e \verb|prot-nelf.inpcrd|. O primeiro é simplesmente o \verb|.pdb| anterior mas com a caixa de águas e os iões neutralizadores. No \href{https://ambermd.org/FileFormats.php#topology}{prmtop} encontram-se os parâmetros do campo de forças e a topologia do sistema. Esta informação permanecerá inalterada ao longo das simulações. Por último, \verb|inpcrd| possui as coordenadas dos vários átomos e até das velocidades, quando pedido para dar \textit{print} nos cálculos de dinâmica molecular. Ao longo das simulações estas posições irão evoluir, cada uma resultando num novo conjunto de coordenadas.	
+	Antes de adicionar a água é necessário neutralizar o sistema. Com o \verb|xleap| adicionaram-se iões de Cl$^-$ e/ou Na$^+$, conforme determinado pelo programa, e logo depois, introduziu-se no sistema uma caixa de águas (explícitas) com dimensões tais que as distâncias do exterior da proteína às paredes da caixa sejam no mínimo 12\AA. Os valores tipicamente usados para as dimensões da caixa encontra-se entre $8-12$\AA, quando condições fronteira periódicas são aplicadas aos cálculos \cite{galindo-murilloMolecularModelingNucleic2014}, que serão incluídas a seguir na mecânica e dinâmica moleculares. O valor escolhido é um \textit{trade-off} entre precisão e custo computacional, que aumentam com as dimensões da caixa. Deste processo resultam os ficheiros seguintes: \verb|prot-nelf.pdb|, \verb|prot-nelf.prmtop|, e \verb|prot-nelf.inpcrd|. O primeiro é simplesmente o \verb|.pdb| anterior mas com a caixa de águas e os iões neutralizadores. No \href{https://ambermd.org/FileFormats.php#topology}{prmtop} encontram-se os parâmetros do campo de forças e a topologia do sistema. Esta informação permanecerá inalterada ao longo das simulações. Por último, \verb|inpcrd| possui as coordenadas dos vários átomos e até das velocidades, quando pedido para dar \textit{print} nos cálculos de dinâmica molecular. Ao longo das simulações estas posições irão evoluir, cada uma resultando num novo conjunto de coordenadas.	
 		
 \subsection{Mecânica Molecular - Minimização da Energia}
 	% Queria encontrar uma maneira de introduzir o abundância de mínimos locais abaixo dessa energia resultaria em estruturas muito afastadas da realidade ou instáveis.
@@ -238,7 +242,7 @@
 	
 	O sistema passou por três processos de minimização: no primeiro relaxou-se as posições e geometria das moléculas de água; em segundo foram otimizadas as posições dos hidrogénios; em terceiro relaxou-se a posição de todos os átomos.
 	
-	Cada um destes processos começou com 250 iterações de \textit{steepest descent} e acabou com 250 de um algoritmo de gradiente conjugado. Foram admitidas condições fronteira periódicas e usou-se um raio de corte de 10\AA \ para interações não ligantes, ou seja, entre moléculas distintas. Face à exigência computacional destes cálculos, eles foram realizados através do SANDER compilado em paralelo: \verb|sander.MPI|.
+	Cada um destes processos começou com 250 iterações de \textit{steepest descent} e acabou com 250 de um algoritmo de gradiente conjugado. Foram admitidas condições fronteira periódicas e usou-se um raio de corte de 10\AA \ para interações não ligantes, ou seja, entre moléculas distintas.
 	
 \subsection{Dinâmica Molecular - Equilibração e Produção}
 	%particular observable property (e.g., temperature, pressure, volume, potential energy).
@@ -252,7 +256,7 @@
 	%may lead to more overlaps and more large displacements; this cascade of events can lead
 	%to local hot spots or failure of the integrator during MD.
 	
-	As simulações de dinâmica molecular foram divididas em duas partes: equilibração e produção. Na equilibração, correspondendo ao ensemble canónico, o sistema foi aquecido a volume constante desde 0 K até à temperatura de produção de 310.15 K (37 $^\circ$C) ao longo de 20 ps com intervalo de integração de 1 fs. Para controlo de temperatura usou-se o termostato de Langevin com fator $\gamma = 1 \textrm{ ps}^{-1}$, que corresponde à frequência das colisões, responsáveis pela troca de energia cinética entre os átomos. Foi considerado um raio de corte de 10\AA \ para as interações não ligantes. Nesta fase pretendemos preparar o sistema para a simulação biologicamente relevante, tendo-se mantido o volume constante ao longo da simulação.
+	As simulações de dinâmica molecular foram divididas em duas partes: equilibração e produção. Na equilibração, correspondendo ao ensemble canónico, o sistema foi aquecido a volume constante desde 0 K até à temperatura de produção de 310.15 K (37 $^\circ$C) ao longo de 20 ps com intervalo de integração de 1 fs. Para controlo de temperatura usou-se o termostato de Langevin com fator $\gamma = 1 \textrm{ ps}^{-1}$, que corresponde à frequência das colisões, responsáveis pela troca de energia cinética entre os átomos. Foi considerado um raio de corte de 10\AA \ para as interações não ligantes. Nesta fase pretendemos preparar o sistema para a simulação biologicamente relevante, tendo-se mantido o volume constante ao longo da simulação. Face à exigência computacional destes cálculos, eles foram realizados através do SANDER compilado em paralelo: \verb|sander.MPI|.
 	
 	Na produção, por outro lado, a temperatura e a pressão foram mantidas constantes, a 310.15 K e 1 bar, respetivamente, e o sistema foi evoluído ao longo de 100 ps com intervalo de integração de 1 fs. O controlo de temperatura e o raio de corte foram iguais ao da primeira dinâmica, enquanto que o controlo de pressão foi realizado através de ``MD with isotropic position scaling'' com um tempo de relaxação de 2 ps. Esta parte da DM também foi compilada pelo \verb|sander.MPI| usando 4 nodos, demorando cerca de 10h para finalizar o cálculo.
 	
@@ -368,7 +372,7 @@
 	Outro resultado interessante desta análise é o valor para o qual vemos que as densidades convergem para $r>9\AA$. A convergência dá-se porque quanto mais nos afastamos do átomo de referência, menor a influência terão esses átomos sobre estas camadas exteriores e menor será a contribuição da densidade das camadas interiores para o cálculo médio da densidade, ou seja, aproximamo-nos da homogeneidade. No entanto, seria de esperar uma tendência para 1 (densidade da água) e não $\approx0.5$, como se verifica. Isto acontece porque aproximadamente metade do volume contido nas cascas esféricas para o cálculo da RDF é preenchido pela protease, que não contribui para a função densidade do solvente. Se expandíssemos a análise para raios maiores acabaríamos por ver o patamar esperado para a RDF. Porém, esse estudo não faria sentido porque nas nossas simulações só foram consideradas interações num raio de $10 \AA$ de cada átomo.
 	
 \subsection{Ligações de Hidrogénio}
-	O programa \verb|ptraj| do AMBER foi usado para determinar os comprimentos ($d$) e ângulos ($\theta$) de ligação de todas as pontes de hidrogénio presentes no sistema. Na \cref{fig:an:hbonds-table} é apresentado um \textit{print} do \textit{output} destes cálculos com as cinco principais pontes de hidrogénio, onde o valor de ocupação indica a percentagem de \textit{snapshots} do sistema em que a ligação em questão cumpria as condições para se qualificar como ponte de hidrogénio, um indicador da estabilidade da ligação, tendo-se detetado um total de 202 ligações deste tipo.
+	O \verb|ptraj| foi novamente utilizado, desta vez para determinar os comprimentos ($d$) e ângulos ($\theta$) de ligação de todas as pontes de hidrogénio presentes no sistema. Na \cref{fig:an:hbonds-table} é apresentado um \textit{print} do \textit{output} destes cálculos com as cinco principais pontes de hidrogénio, onde o valor de ocupação indica a percentagem de \textit{snapshots} do sistema em que a ligação em questão cumpria as condições para se qualificar como ponte de hidrogénio, um indicador da estabilidade da ligação, tendo-se detetado um total de 202 ligações deste tipo.
 	
 	Para tentar encontrar os valores de $d$ e $\theta$ que conferem maior estabilidade às ligações construiu-se o gráfico da \cref{fig:an:hbonds-plot}. Embora esta análise seja muito primitiva e superficial, os valores de $d$ mais estáveis parecem estar em torno dos $2.8 - 2.9$ \AA, e os de $\theta$ mais próximos do intervalo $160 - 165 ^{\circ}$.
 	
@@ -410,6 +414,16 @@
 		\label{fig:an:ASP-1UN}
 	\end{figure}
 
+\section{Conclusões}
+	Neste trabalho foram exploradas os primeiros passos com rumo à simulação de sistemas biológicos, tendo sido abordada teoria, trabalho computacional e vários métodos de análise da dados.
+	
+	A incorporação do Nelfinavir na HIV-1 protease foi o nosso objeto de estudo e foi realizada uma pequena simulação de 120 ps de Dinâmica Molecular, que se mostrou termodinamicamente estável, embora uma estrutura convergida só fosse possível atingir para simulações superiores a 3 ns.
+	
+	A estrutura final e a sua evolução ao longo da etapa de produção foi analisada à luz das suas propriedades termodinâmicas, \textit{root mean square deviation} e função de distribuição radial (RDF).	Foram também analisadas todas as pontes de hidrogénio do sistema, num total de 202 detetadas, com ênfase atribuída às que uma molécula de água estrutural estabelece com o Nelfinavir e a proteína. Finalmente, foram analisados os comprimentos de ligação entre os ácidos aspárticos do centro ativo da proteína e o inibidor.
+	
+	Em geral, achei todo este trabalho extremamente interessante e enriquecedor. Tive a oportunidade de aprender fundamentos de uma área que achava ser completamente ortogonal à Física mas que se veio a revelar ter imensa coisa em comum. Gostei do desafio de investigar conceitos como a protonação dos ASP25 no início do trabalho. No entanto, gostava de ter explorado mais a fundo outros pontos como as RDFs e a análise das pontes de hidrogénio, mas sinto que ter frequentado esta cadeira e escrever este relatório me proporcionaram a curiosidade e confiança para investigar estes assuntos por conta própria.
+	
+	Muito obrigado aos professores pelas ótimas aulas, por promoverem a discussão com os alunos e estarem sempre disponíveis para esclarecer dúvidas.
 \newpage
 \bibliographystyle{unsrt}
 \bibliography{biblio,biblio-vmd}

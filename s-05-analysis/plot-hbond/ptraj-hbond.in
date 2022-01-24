@@ -1,0 +1,53 @@
+trajin MD2.mdcrd
+
+center @CA
+image center familiar
+#-- Donors backbone
+donor mask :1-198@O
+
+#-- Acceptors from backbone (except prolines)
+#N-H for prolines do not exist, so are not in the mask
+acceptor mask :2-8,10-38,40-43,45-78,80,82-99,101-107,109-137,139-142,144-177,179,181-198@N :2-8,10-38,40-43,45-78,80,82-99,101-107,109-137,139-142,144-177,179,181-198@H
+
+#-- N termini
+acceptor mask :1,100@N :1,100@H2
+acceptor mask :1,100@N :1,100@H3
+
+#-- C termini
+donor mask :99,198@OXT
+
+#-- Donors from standard amino acids
+donor mask :GLN@OE1
+donor mask :ASN@OD1
+donor mask :ASN@ND2
+donor mask :TYR@OH
+donor mask :ASP@OD1
+donor mask :ASP@OD2
+donor mask :ASH@OD2
+donor mask :GLU@OE1
+donor mask :GLU@OE2
+donor mask :SER@OG
+donor mask :THR@OG1
+donor mask :HIE@ND1
+
+#-- Acceptors from standard amino acids
+acceptor mask :ASN@ND2 :ASN@HD21
+acceptor mask :ASN@ND2 :ASN@HD22
+acceptor mask :TYR@OH :TYR@HH
+acceptor mask :GLN@NE2 :GLN@HE21
+acceptor mask :GLN@NE2 :GLN@HE22
+acceptor mask :TRP@NE1 :TRP@HE1
+acceptor mask :LYS@NZ :LYS@HZ1
+acceptor mask :LYS@NZ :LYS@HZ2
+acceptor mask :LYS@NZ :LYS@HZ3
+acceptor mask :SER@OG :SER@HG
+acceptor mask :THR@OG1 :THR@HG1
+acceptor mask :ARG@NH2 :ARG@HH21
+acceptor mask :ARG@NH2 :ARG@HH22
+acceptor mask :ARG@NH1 :ARG@HH11
+acceptor mask :ARG@NH1 :ARG@HH12
+acceptor mask :ARG@NE :ARG@HE
+acceptor mask :HIE@NE2 :HIE@HE2
+
+
+hbond distance 3.5 angle 140 print 0.05 series
