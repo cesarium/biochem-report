@@ -51,7 +51,7 @@
 \subsection{Inibidores da HIV-1 protease}
 	%Alguns destes pontos são para ser discutidos no abstract.
 	%Falar da proteína em si e quais as suas funções, pq é que danificá-la para a propagação/infeção da sida, o que é um inibidor, extra: como é que foi implementado experimentalmente este inibidor no artigo usado extra: origem da ideia de usar este inibidor
-	A Protease do HIV-1 é uma enzima responsável por um passo essencial no ciclo de vida do vírus HIV. Para que as proteínas do HIV-1 desempenharem as suas funções, é necessário que elas sejam clivadas em pontos específicos. Dada a especificidade deste processo, foram procuradas formas de interferir com ele, afim de interromper o ciclo de vida do vírus.
+	A Protease do HIV-1 é uma enzima responsável por um passo essencial no ciclo de vida do vírus HIV. Para que as proteínas do HIV-1 desempenhem as suas funções, é necessário que elas sejam clivadas em pontos específicos. Dada a especificidade deste processo, foram procuradas formas de interferir com ele, afim de interromper o ciclo de vida do vírus.
 	
 	Neste relatório foi abordado um dos métodos desenvolvidos para concretizar esta ideia, incorporando o inibidor \textit{Nelfinavir} na estrutura da protease.
 	
@@ -206,7 +206,7 @@
 	Para lidar com elementos estruturais diferentes, distinguir por exemplo uma prolina (PRO) de uma glutamina (GLN), o AMBER recorre a bibliotecas que possuem modelos destas estruturas básicas. No entanto, o inibidor Nelfinavir, que designaremos por 1UN, não está presente nestas bibliotecas, pelo que teremos que o adicionar ao AMBER antes de prosseguir com as simulações. A criação dos \textit{scripts} adequados é um processo complexo, pelo que os professores simplesmente nos forneceram os ficheiros necessários já preparados: \verb|1UN.mod| e \verb|1UN.prepc|.
 	
 \subsubsection{ASP25 Protonado}
-	Como é referido em \cite{soaresDatasetShowingImpact2016,perezSubstrateRecognitionHIV12010}, o sistema constituído pela protease e o inibidor só é estável se um dos dois ácidos aspárticos (ASP25) for protonado. Para o AMBER interpretar um deles como tal, alterou-se \verb|ASP| (desprotonado) para \verb|ASH| (protonado) na cadeia A.
+	Como é referido em \cite{UnravelingHIVProtease,soaresDatasetShowingImpact2016,SubstrateRecognitionHIV1}, o sistema constituído pela protease e o inibidor só é estável se um dos dois ácidos aspárticos (ASP25) for protonado. Para o AMBER interpretar um deles como tal, alterou-se \verb|ASP| (desprotonado) para \verb|ASH| (protonado) na cadeia A.
 	
 %	\begin{equation}
 %		\mathrm{pH} - \mathrm{pKa} = \log\dfrac{\left[A\right]}
@@ -256,7 +256,7 @@
 	%may lead to more overlaps and more large displacements; this cascade of events can lead
 	%to local hot spots or failure of the integrator during MD.
 	
-	As simulações de dinâmica molecular foram divididas em duas partes: equilibração e produção. Na equilibração, correspondendo ao ensemble canónico, o sistema foi aquecido a volume constante desde 0 K até à temperatura de produção de 310.15 K (37 $^\circ$C) ao longo de 20 ps com intervalo de integração de 1 fs. Para controlo de temperatura usou-se o termostato de Langevin com fator $\gamma = 1 \textrm{ ps}^{-1}$, que corresponde à frequência das colisões, responsáveis pela troca de energia cinética entre os átomos. Foi considerado um raio de corte de 10\AA \ para as interações não ligantes. Nesta fase pretendemos preparar o sistema para a simulação biologicamente relevante, tendo-se mantido o volume constante ao longo da simulação. Face à exigência computacional destes cálculos, eles foram realizados através do SANDER compilado em paralelo: \verb|sander.MPI|.
+	As simulações de dinâmica molecular foram divididas em duas partes: equilibração e produção. Na equilibração, correspondendo ao ensemble canónico, o sistema foi aquecido a volume constante desde 0 K até à temperatura de produção de 310.15 K (37 $^\circ$C) ao longo de 20 ps com intervalo de integração de 1 fs. Para controlo de temperatura usou-se o termostato de Langevin com fator $\gamma = 1 \textrm{ ps}^{-1}$, que corresponde à frequência das colisões simuladas, responsáveis pela troca de energia cinética entre os átomos. Foi considerado um raio de corte de 10\AA \ para as interações não ligantes. Nesta fase pretendemos preparar o sistema para a simulação biologicamente relevante, tendo-se mantido o volume constante ao longo da simulação. Face à exigência computacional destes cálculos, eles foram realizados através do SANDER compilado em paralelo: \verb|sander.MPI|.
 	
 	Na produção, por outro lado, a temperatura e a pressão foram mantidas constantes, a 310.15 K e 1 bar, respetivamente, e o sistema foi evoluído ao longo de 100 ps com intervalo de integração de 1 fs. O controlo de temperatura e o raio de corte foram iguais ao da primeira dinâmica, enquanto que o controlo de pressão foi realizado através de ``MD with isotropic position scaling'' com um tempo de relaxação de 2 ps. Esta parte da DM também foi compilada pelo \verb|sander.MPI| usando 4 nodos, demorando cerca de 10h para finalizar o cálculo.
 	
@@ -311,12 +311,12 @@
  
 	A \cref{fig:an:wat205-plot} leva-nos a concluir que as pontes de hidrogénio com as ILE50 são muito estáveis, embora haja uma quebra da ligação por volta dos 300 ps, mas que pode ser justificada por uma configuração inicial não otimizada, dado que depois verifica-se que os pontos a azul concentram-se muito mais para distância pequenas. O facto destes resíduos pertencerem à proteína leva-me a concluir que estes são responsáveis pela grande estabilidade da água. 
 	
-	A água também se encontra fortemente ligada com o O17 do inibidor. No entanto, o S74 é o que quebra a ligação mais frequentemente, mas que acaba por estabilizar abaixo do \textit{treshold} a partir dos 800 ps de produção. Mais tempo de simulação é necessário para determinar se esta relação se mantém ou se surgem pontes de hidrogénio entre átomos diferentes.
+	A água também se encontra fortemente ligada ao O17 do inibidor. No entanto, o S74 é o que quebra a ligação mais frequentemente, acabando por estabilizar abaixo do \textit{treshold} a partir dos 800 ps de produção. Mais tempo de simulação é necessário para determinar se esta relação se mantém ou se surgem pontes de hidrogénio entre átomos diferentes.
 
 \subsection{Propriedades Termodinâmicas e RMSD}
 	Como este tipo de sistemas biológicos é estável na natureza, só faz sentido tirar conclusões de um sistema termodinamicamente estável isto é, um sistema cujas propriedades termodinâmicas estejam convergidas. Essas propriedades são: volume, massa, temperatura, pressão e energia. O AMBER foi instruído a imprimir nos ficheiros de output todas as variáveis termodinâmicas que nos interessaram a cada 100 iterações, permitindo-nos construir os gráficos da \cref{fig:an:plots-summary}, onde podemos verificar que todas as variáveis termodinâmicas estudadas convergiram.
 	
-	Numa discussão do trabalho com o meu colega Pedro Sousa, surgiram-nos dúvidas quanto à viabilidade da fase produção, que supostamente foi teria sido realizada a pressão constante. São evidentes oscilações significativas na pressão do sistema, na ordem das centenas de bar, de iteração para iteração. Consultando o capítulo ``2.5.8 Pressure Regulation'' do \href{https://ambermd.org/doc12/Amber12.pdf}{manual do AMBER}, ficou claro que este tipo de oscilações é esperado do algoritmo, sendo que com o número de iterações a média das pressões irá tender para a pressão objetivo, no nosso caso 1 bar (linha amarela horizontal na \cref{fig:an:plots-summary}). A vermelho foi representada a média móvel de 15 pontos (intervalo de 14 fs) para ilustrar como de facto a média das pressões tende para o valor esperado.
+	Numa discussão do trabalho com o meu colega Pedro Sousa, surgiram-nos dúvidas quanto à viabilidade da fase produção, que supostamente teria sido realizada a pressão constante. São evidentes oscilações significativas na pressão do sistema, na ordem das centenas de bar, de iteração para iteração. Consultando o capítulo ``2.5.8 Pressure Regulation'' do \href{https://ambermd.org/doc12/Amber12.pdf}{manual do AMBER}, ficou claro que este tipo de oscilações é esperado do algoritmo, sendo que com o número de iterações a média das pressões irá tender para a pressão objetivo, no nosso caso 1 bar (linha amarela horizontal na \cref{fig:an:plots-summary}). A vermelho foi representada a média móvel de 15 pontos (intervalo de 14 fs) para ilustrar como de facto a média das pressões tende para o valor esperado.
 	
 	\begin{figure}[h]
 	\centering
@@ -371,6 +371,15 @@
 	
 	Outro resultado interessante desta análise é o valor para o qual vemos que as densidades convergem para $r>9\AA$. A convergência dá-se porque quanto mais nos afastamos do átomo de referência, menor a influência terão esses átomos sobre estas camadas exteriores e menor será a contribuição da densidade das camadas interiores para o cálculo médio da densidade, ou seja, aproximamo-nos da homogeneidade. No entanto, seria de esperar uma tendência para 1 (densidade da água) e não $\approx0.5$, como se verifica. Isto acontece porque aproximadamente metade do volume contido nas cascas esféricas para o cálculo da RDF é preenchido pela protease, que não contribui para a função densidade do solvente. Se expandíssemos a análise para raios maiores acabaríamos por ver o patamar esperado para a RDF. Porém, esse estudo não faria sentido porque nas nossas simulações só foram consideradas interações num raio de $10 \AA$ de cada átomo.
 	
+	Para ter uma melhor noção da origem destes resultados e da disposição dos resíduos na proteína, na \cref{fig:an:water-within} estão representados os resíduos estudados nesta secção assim como as suas águas mais próximas. Como podemos observar, as GLU21 e ASP29 encontram-se muito próximos das fronteiras da proteína, que contacta com o solvente, e daí a grande dispersão de nos resultados entre estes resíduos e os ASP, cuja água mais próxima é a catalítica.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{images/water-within.png}
+		\caption{Representação dos resíduos estudados na RDF e das águas mais próximas de cada um deles. Para as GLU21 e ASP29 estão representadas as águas até 2.0 \AA\ de si. A laranja e vermelho estão representadas a proteína e o inibidor em modo ``QuickSurf''.}
+		\label{fig:an:water-within}
+	\end{figure}
+	
 \subsection{Ligações de Hidrogénio}
 	O \verb|ptraj| foi novamente utilizado, desta vez para determinar os comprimentos ($d$) e ângulos ($\theta$) de ligação de todas as pontes de hidrogénio presentes no sistema. Na \cref{fig:an:hbonds-table} é apresentado um \textit{print} do \textit{output} destes cálculos com as cinco principais pontes de hidrogénio, onde o valor de ocupação indica a percentagem de \textit{snapshots} do sistema em que a ligação em questão cumpria as condições para se qualificar como ponte de hidrogénio, um indicador da estabilidade da ligação, tendo-se detetado um total de 202 ligações deste tipo.
 	
@@ -413,15 +422,15 @@
 		\caption{\textbf{(a)} Representação das ligações entre os átomos OD* dos ASP25 ao O21 do inibidor. \textbf{(b)} Gráfico das distâncias (\AA) em função do tempo de produção (ps). Na legenda pode-se observar o valor médio ($\mu$) e o desvio padrão ($\sigma$) dos comprimentos de ligação. Na vertical também estão assinaladas, nas suas cores correspondentes, linhas que correspondem ao $\mu$ de cada ligação.}
 		\label{fig:an:ASP-1UN}
 	\end{figure}
-
+\newpage
 \section{Conclusões}
 	Neste trabalho foram exploradas os primeiros passos com rumo à simulação de sistemas biológicos, tendo sido abordada teoria, trabalho computacional e vários métodos de análise da dados.
 	
 	A incorporação do Nelfinavir na HIV-1 protease foi o nosso objeto de estudo e foi realizada uma pequena simulação de 120 ps de Dinâmica Molecular, que se mostrou termodinamicamente estável, embora uma estrutura convergida só fosse possível atingir para simulações superiores a 3 ns.
 	
-	A estrutura final e a sua evolução ao longo da etapa de produção foi analisada à luz das suas propriedades termodinâmicas, \textit{root mean square deviation} e função de distribuição radial (RDF).	Foram também analisadas todas as pontes de hidrogénio do sistema, num total de 202 detetadas, com ênfase atribuída às que uma molécula de água estrutural estabelece com o Nelfinavir e a proteína. Finalmente, foram analisados os comprimentos de ligação entre os ácidos aspárticos do centro ativo da proteína e o inibidor.
+	A estrutura final e a sua evolução ao longo da etapa de produção foram analisados à luz das suas propriedades termodinâmicas, \textit{root mean square deviation} e função de distribuição radial (RDF).	Foram também estudadas todas as pontes de hidrogénio do sistema, num total de 202 detetadas, com ênfase atribuída às que uma molécula de água estrutural estabelece com o Nelfinavir e a proteína. Finalmente, foram analisados os comprimentos de ligação entre os ácidos aspárticos do centro ativo da proteína e o inibidor.
 	
-	Em geral, achei todo este trabalho extremamente interessante e enriquecedor. Tive a oportunidade de aprender fundamentos de uma área que achava ser completamente ortogonal à Física mas que se veio a revelar ter imensa coisa em comum. Gostei do desafio de investigar conceitos como a protonação dos ASP25 no início do trabalho. No entanto, gostava de ter explorado mais a fundo outros pontos como as RDFs e a análise das pontes de hidrogénio, mas sinto que ter frequentado esta cadeira e escrever este relatório me proporcionaram a curiosidade e confiança para investigar estes assuntos por conta própria.
+	Em geral, achei todo este trabalho extremamente interessante e enriquecedor. Tive a oportunidade de aprender fundamentos de uma área que achava ser completamente ortogonal à Física mas que se veio a revelar ter imensa coisa em comum. Gostei do desafio de investigar vários conceitos como a protonação dos ASP25 e a construção dos campos de forças. No entanto, gostava de ter explorado mais a fundo outros pontos como as RDFs e a análise das pontes de hidrogénio, mas sinto que ter frequentado esta cadeira e escrever este relatório me proporcionaram a curiosidade e confiança para investigar estes assuntos por conta própria.
 	
 	Muito obrigado aos professores pelas ótimas aulas, por promoverem a discussão com os alunos e estarem sempre disponíveis para esclarecer dúvidas.
 \newpage
