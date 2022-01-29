@@ -1,0 +1,65 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage[margin=2cm]{geometry}
+%\setlength{\parindent}{13pt}
+\usepackage{listings,mathptmx,amsfonts,amsmath,amssymb,amsthm}
+\linespread{1.3}% equals 1.5 of line spacing
+
+\usepackage[font=footnotesize,labelfont=bf,tableposition=top]{caption}
+
+%\usepackage[backend=bibtex,citestyle=numeric-comp,bibstyle=ieee,sorting=none,minbibnames=5,maxbibnames=5,defernumbers=true,firstinits=true]{biblatex}
+
+\usepackage{subcaption,mathtools,float,cite,lipsum,bm,physics,pythontex,caption}
+%\usepackage[colorlinks]{hyperref}
+\usepackage{sectsty,isotope,xcolor}
+\usepackage{graphicx}
+
+%\hypersetup{linkcolor=blue}
+%\hypersetup{citecolor=blue}
+
+\usepackage[colorlinks = true,
+linkcolor = blue,
+urlcolor  = blue,
+citecolor = blue,
+anchorcolor = blue]{hyperref}
+
+\usepackage[nameinlink,capitalize]{cleveref}
+\usepackage[bottom]{footmisc}
+
+\title{\textbf{Molécula Magnífica: Veneno\\de Abelha - Phospholipase A2}}
+\author{\textbf{António Cesário}\\\\%
+	Faculdade de Ciências da Universidade do Porto\\%
+	Mestrado em Física Experimental\\%
+	Bioquímica Computacional%\\%
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+\noindent\rule{\textwidth}{0.4pt}
+\paragraph{}
+
+\begin{flushright}\textit{``O que arde cura (...)''} - Ditado Popular Português\end{flushright}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+O veneno da abelha do mel (\textit{Apis mellifera}) contém uma larga gama de proteínas e toxinas \cite{HoneybeeVenomRich,sonTherapeuticApplicationAntiarthritis2007}. Algumas destas toxinas têm muito interesse para a farmacologia, sendo usadas há muitos anos para tratar doenças como atrites, e estão atualmente a ser investigados pelas suas propriedades radio-protetoras, antimutagénicas, anti-cancerígenas, entre outras \cite{leeBeeVenomPhospholipase2016}.
+
+O composto \textit{Phospholipase A2 de Grupo III} (III sPLA$_2$) constitui cerca de 10\% do veneno seco e é conhecido por ser o alergénio principal destas abelhas, podendo causar choques anafiláticos. Contudo, o III sPLA$_2$ revela propriedades muito interessantes e benéficas para o ser humano, tendo sido estudada a sua integração para o tratamento em doenças como asma, Parkinson, e outros efeitos anti-inflamatórios \cite{leeBeeVenomPhospholipase2016}. Porém, é necessário encontrar um compromisso entre os perigos e os benefícios deste composto.
+
+A estrutura molecular do III sPLA$_2$ pode ser encontrada em \href{https://www.rcsb.org/structure/1POC}{DOI:10.2210/pdb1POC/pdb}. Para concluir o desafio da molécula magnífica, remeto para a imagem da \cref{fig:}, onde está retratada a molécula do composto mencionado. A estrutura foi representada através das funcionalidades do site \href{https://www.rcsb.org/3d-view/ngl/1poc}{rcsb.org} usando o NGL como \textit{viewer}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{latex-image.jpg}
+	\caption{Representação da estrutura do composto III sPLA$_2$ no abdómen de uma abelha. A imagem original pode ser encontrada \href{https://post.healthline.com/wp-content/uploads/2020/08/732x549_How_Is_An_Infected_Bee_Sting_Treated-1-732x549.jpg}{neste link}. Edição de imagem: José Cesário.}
+	\label{fig:}
+\end{figure} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Agradecimentos:} Agradeço ao meu irmão, José Cesário, por ter editado a imagem.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{unsrt}
+\bibliography{biblio}
+\end{document}
